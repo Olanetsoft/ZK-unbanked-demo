@@ -1,0 +1,15 @@
+{
+  "network": "celoTestnet",
+  "timestamp": "2025-08-06T02:35:44.757Z",
+  "contracts": {
+    "unbankedIdentity": "0x8843ddc7021154Bb77283c5122bcc4E199A7e22E",
+    "communityAirdrop": "0xb15CC4Fe3eFC957F6A48e6c7493281aBe76ed94a",
+    "demoToken": "0x6be60B6DE9adAc380bFb0F3D649BE967574D2F68",
+    "selfHub": "0x68c931C9a534D37aa78094877F46fE46a49F1A51"
+  },
+  "configuration": {
+    "scope": "1218868236",
+    "configId": "0xf294de152c020a1938906689de41509af830e28ca0a016f653d135f47a1402a4"
+  },
+  "deployer": "0x510e5EA32386B7C48C4DEEAC80e86859b5e2416C"
+}

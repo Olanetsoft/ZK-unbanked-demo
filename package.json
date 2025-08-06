@@ -1,0 +1,20 @@
+{
+  "name": "zk-unbanked-identity",
+  "version": "1.0.0",
+  "description": "ZK Identity for the Unbanked - Full Stack Demo",
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:contracts": "cd contracts && npx hardhat node",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "build": "npm run build:frontend && npm run build:backend",
+    "deploy:local": "cd contracts && npx hardhat run scripts/deploy.js --network localhost",
+    "deploy:testnet": "cd contracts && npx hardhat run scripts/deploy.js --network celoTestnet",
+    "setup": "npm install && cd frontend && npm install && cd ../backend && npm install && cd ../contracts && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
