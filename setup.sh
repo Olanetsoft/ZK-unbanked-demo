@@ -71,7 +71,7 @@ echo -e "\n${BLUE}📝 Creating frontend configuration files...${NC}"
 
 # Create .env.local
 cat > .env.local << 'EOF'
-NEXT_PUBLIC_SELF_ENDPOINT=https://stage.self.id/api/v2/request
+NEXT_PUBLIC_SELF_ENDPOINT=https://stage.self.xyz/api/v2/request
 NEXT_PUBLIC_SELF_SCOPE=zk-unbanked-demo
 NEXT_PUBLIC_SELF_APP_NAME=ZK Identity for the Unbanked
 NEXT_PUBLIC_API_URL=http://localhost:3001

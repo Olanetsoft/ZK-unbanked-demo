@@ -14,7 +14,7 @@ Privacy-preserving identity system enabling financial inclusion for 1+ billion u
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/Olanetsoft/ZK-unbanked-demo.git
 cd zk-unbanked-demo
 
 # Install all dependencies (frontend, backend, contracts)
@@ -136,7 +136,7 @@ zk-unbanked-demo/
 #### Frontend (.env.local)
 
 ```bash
-NEXT_PUBLIC_SELF_ENDPOINT=https://stage.self.id/api/v2/request
+NEXT_PUBLIC_SELF_ENDPOINT=https://stage.self.xyz/api/v2/request
 NEXT_PUBLIC_SELF_SCOPE=zk-unbanked-demo
 NEXT_PUBLIC_SELF_APP_NAME=ZK Identity for the Unbanked
 NEXT_PUBLIC_API_URL=http://localhost:3001
@@ -289,9 +289,9 @@ npm run setup
 ### Getting Help
 
 - **Issues**: Create an issue on GitHub
-- **Documentation**: Check [Self Protocol Docs](https://docs.self.id)
+- **Documentation**: Check [Self Protocol Docs](https://docs.self.xyz)
 - **Community**: Join our Discord/Telegram (links coming soon)
 
 ---
 
-Built with ❤️ for financial inclusion and powered by [Self Protocol](https://self.id)
+Built with ❤️ for financial inclusion and powered by [Self Protocol](https://self.xyz)
