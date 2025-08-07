@@ -18,6 +18,7 @@ import {
 import { GlassCard } from "@/components/ui/GlassCard";
 import { NeonButton } from "@/components/ui/NeonButton";
 import { SelfQRWrapper } from "./SelfQRWrapper";
+import toast from "react-hot-toast";
 
 interface IdentityVerificationProps {
   onComplete: (identifier: string) => void;
@@ -32,18 +33,37 @@ export const IdentityVerification: React.FC<IdentityVerificationProps> = ({
     "intro" | "qr" | "processing" | "complete"
   >("intro");
   const [showPrivacyDetails, setShowPrivacyDetails] = useState(false);
-  const [simulationMode, setSimulationMode] = useState(true); // For demo purposes
+  const [simulationMode, setSimulationMode] = useState(
+    process.env.NEXT_PUBLIC_SELF_MOCK_MODE === "true"
+  ); // Use environment variable to control mode
 
-  const handleVerificationSuccess = () => {
+  const handleVerificationSuccess = (
+    userIdentifier: string,
+    disclosures?: any
+  ) => {
+    console.log("🎉 Verification successful:", { userIdentifier, disclosures });
     setVerificationStep("processing");
 
-    // Simulate processing
+    // Simulate processing for UI effect
     setTimeout(() => {
       setVerificationStep("complete");
       setTimeout(() => {
-        onComplete(`0x${Math.random().toString(16).substr(2, 40)}`);
+        onComplete(userIdentifier);
       }, 2000);
-    }, 3000);
+    }, 1500);
+  };
+
+  const handleVerificationError = (error: any) => {
+    console.error("❌ Verification error:", error);
+    // Could add error state handling here
+    toast.error("Verification failed. Please try again.", {
+      style: {
+        borderRadius: "10px",
+        background: "#1a1a2e",
+        color: "#fff",
+        border: "1px solid #ef4444",
+      },
+    });
   };
 
   const privacyFeatures = [
@@ -229,6 +249,7 @@ export const IdentityVerification: React.FC<IdentityVerificationProps> = ({
             <div className="flex justify-center mb-8">
               <SelfQRWrapper
                 onSuccess={handleVerificationSuccess}
+                onError={handleVerificationError}
                 simulationMode={simulationMode}
               />
             </div>

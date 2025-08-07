@@ -7,7 +7,12 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "npx hardhat compile",
+    "deploy:local": "npx hardhat run scripts/deploy.js --network localhost",
+    "deploy:testnet": "npx hardhat run scripts/deploy.js --network celoTestnet",
+    "deploy:mainnet": "npx hardhat run scripts/deploy.js --network celoMainnet",
+    "node": "npx hardhat node"
   },
   "keywords": [],
   "author": "",

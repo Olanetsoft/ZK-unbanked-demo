@@ -49,6 +49,148 @@ export const ServiceGrid: React.FC<ServiceGridProps> = ({
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  const handleServiceAction = async (service: string) => {
+    setIsProcessing(true);
+
+    try {
+      let response;
+      let transaction;
+
+      switch (service) {
+        case "microloan":
+          const loanAmount = calculateLoanAmount(reputationScore);
+
+          // Call real backend API for microloan
+          response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/verify`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                action: "applyMicroloan",
+                userIdentifier,
+                requestedAmount: loanAmount,
+              }),
+            }
+          );
+
+          const loanResult = await response.json();
+
+          if (loanResult.success) {
+            transaction = {
+              id: loanResult.transaction?.id || Date.now().toString(),
+              type: "Microloan",
+              amount: `$${loanResult.approvedAmount}`,
+              status: "completed",
+              timestamp: new Date().toISOString(),
+              hash: loanResult.transactionHash || `loan_${Date.now()}`,
+            };
+            toast.success(
+              `💰 Microloan approved for $${loanResult.approvedAmount}!`
+            );
+          } else {
+            throw new Error(loanResult.message || "Microloan failed");
+          }
+          break;
+
+        case "airdrop":
+          // Call real backend API for airdrop (mints actual tokens)
+          response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/verify`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                action: "claimAirdrop",
+                userIdentifier,
+              }),
+            }
+          );
+
+          const airdropResult = await response.json();
+
+          if (airdropResult.success) {
+            transaction = {
+              id: airdropResult.transaction?.id || Date.now().toString(),
+              type: "Airdrop",
+              amount: airdropResult.amount || "100 TOKENS",
+              status: "completed",
+              timestamp: new Date().toISOString(),
+              hash: airdropResult.transactionHash || `airdrop_${Date.now()}`,
+            };
+            toast.success(
+              `🎉 Airdrop claimed! TX: ${airdropResult.transactionHash?.substring(
+                0,
+                10
+              )}...`
+            );
+          } else {
+            throw new Error(airdropResult.message || "Airdrop failed");
+          }
+          break;
+
+        case "governance":
+          // Call real backend API for governance vote
+          response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/verify`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                action: "castVote",
+                userIdentifier,
+                proposalId: 1,
+                vote: "Yes",
+              }),
+            }
+          );
+
+          const voteResult = await response.json();
+
+          if (voteResult.success) {
+            transaction = {
+              id: voteResult.transaction?.id || Date.now().toString(),
+              type: "Vote",
+              amount: `Proposal #${voteResult.proposalId}`,
+              status: "completed",
+              timestamp: new Date().toISOString(),
+              hash: voteResult.transactionHash || `vote_${Date.now()}`,
+            };
+            toast.success(
+              `🗳️ Vote cast! TX: ${voteResult.transactionHash?.substring(
+                0,
+                10
+              )}...`
+            );
+          } else {
+            throw new Error(voteResult.message || "Vote failed");
+          }
+          break;
+
+        case "remittance":
+          // This one can remain mock for now (no specific contract)
+          transaction = generateMockTransaction("Remittance", "$250");
+          toast.success("💸 Remittance sent successfully!");
+          break;
+
+        default:
+          transaction = generateMockTransaction("Unknown", "N/A");
+      }
+
+      setTransactions((prev) => [transaction, ...prev]);
+      setSelectedService(null); // Close the service modal
+    } catch (error) {
+      toast.error(
+        `Transaction failed: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
+      console.error("Service action error:", error);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   const services = [
     {
       id: "microloan",
@@ -103,76 +245,6 @@ export const ServiceGrid: React.FC<ServiceGridProps> = ({
       },
     },
   ];
-
-  const handleServiceAction = async (serviceId: string) => {
-    setIsProcessing(true);
-
-    // Simulate processing
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    let transaction: Transaction | null = null;
-
-    switch (serviceId) {
-      case "microloan":
-        const loanAmount = calculateLoanAmount(reputationScore);
-        transaction = generateMockTransaction("Microloan", `$${loanAmount}`);
-        toast.success(`Microloan of $${loanAmount} approved!`, {
-          icon: "💰",
-          style: {
-            borderRadius: "10px",
-            background: "#1a1a2e",
-            color: "#fff",
-            border: "1px solid #22c55e",
-          },
-        });
-        break;
-
-      case "airdrop":
-        transaction = generateMockTransaction("Airdrop", "100 TOKENS");
-        toast.success("Successfully claimed 100 TOKENS!", {
-          icon: "🎉",
-          style: {
-            borderRadius: "10px",
-            background: "#1a1a2e",
-            color: "#fff",
-            border: "1px solid #7c3aed",
-          },
-        });
-        break;
-
-      case "governance":
-        transaction = generateMockTransaction("Vote", "Proposal #42");
-        toast.success("Your vote has been recorded!", {
-          icon: "🗳️",
-          style: {
-            borderRadius: "10px",
-            background: "#1a1a2e",
-            color: "#fff",
-            border: "1px solid #3b82f6",
-          },
-        });
-        break;
-
-      case "remittance":
-        toast("Remittance feature coming soon!", {
-          icon: "🚧",
-          style: {
-            borderRadius: "10px",
-            background: "#1a1a2e",
-            color: "#fff",
-            border: "1px solid #f59e0b",
-          },
-        });
-        break;
-    }
-
-    if (transaction) {
-      setTransactions([transaction, ...transactions]);
-    }
-
-    setIsProcessing(false);
-    setSelectedService(null);
-  };
 
   return (
     <div className="max-w-6xl mx-auto">

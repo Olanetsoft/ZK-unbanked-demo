@@ -110,26 +110,43 @@ contract UnbankedIdentity is SelfVerificationRoot, Ownable {
     /**
      * @notice Custom verification hook for Self Protocol
      * @param output Verification output containing nullifier and user identifier
+     * @param _userData Additional user context data from the verification
      */
     function customVerificationHook(
         ISelfVerificationRoot.GenericDiscloseOutputV2 memory output,
-        bytes memory /* _userData */
+        bytes memory _userData
     ) internal override {
-        // Check for duplicate registration
+        // Check for duplicate registration using nullifier (prevents sybil attacks)
         if (nullifierToUserIdentifier[output.nullifier] != 0) {
             revert AlreadyRegistered();
         }
 
-        // Register the user
+        // Register the user with enhanced data
         nullifierToUserIdentifier[output.nullifier] = output.userIdentifier;
 
         UserData storage user = userData[output.userIdentifier];
         user.isRegistered = true;
         user.registrationTime = block.timestamp;
 
+        // Initialize with small reputation bonus for successful verification
+        user.reputationScore = 10; // Base verification bonus
+
         totalUsers++;
 
+        // Parse and store any additional disclosed information
+        if (_userData.length > 0) {
+            // You could parse disclosed nationality, age verification, etc.
+            // For privacy, we only store boolean flags or hashed values
+            user.attestationCount++; // Count initial verification as first attestation
+        }
+
         emit UserRegistered(output.nullifier, output.userIdentifier);
+
+        // Award initial reputation for successful identity verification
+        emit ReputationUpdated(
+            address(uint160(output.userIdentifier)),
+            user.reputationScore
+        );
     }
 
     /**

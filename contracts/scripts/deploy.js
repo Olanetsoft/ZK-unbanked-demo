@@ -91,14 +91,60 @@ async function main() {
   const airdropAddress = await airdrop.getAddress();
   console.log(`✅ CommunityAirdrop deployed to: ${airdropAddress}`);
 
-  // Transfer tokens to airdrop contract
-  console.log("💸 Transferring tokens to airdrop contract...");
-  const transferTx = await demoToken.transfer(
+  // Deploy Governance contract
+  console.log("📦 Deploying Governance contract...");
+  const Governance = await ethers.getContractFactory("UnbankedGovernance");
+
+  const governance = await Governance.deploy(
+    unbankedIdentityAddress // Only needs the identity contract address
+  );
+
+  await governance.waitForDeployment();
+  const governanceAddress = await governance.getAddress();
+  console.log(`✅ Governance deployed to: ${governanceAddress}`);
+
+  // Deploy Lending contract
+  console.log("📦 Deploying Lending contract...");
+  const Lending = await ethers.getContractFactory("UnbankedLending");
+
+  const lending = await Lending.deploy(
+    demoTokenAddress,
+    unbankedIdentityAddress
+  );
+
+  await lending.waitForDeployment();
+  const lendingAddress = await lending.getAddress();
+  console.log(`✅ Lending deployed to: ${lendingAddress}`);
+
+  // Transfer tokens to contracts
+  console.log("💸 Transferring tokens to contracts...");
+
+  // Airdrop contract gets 100k tokens
+  const airdropTransferTx = await demoToken.transfer(
     airdropAddress,
     ethers.parseEther("100000")
   );
-  await transferTx.wait();
-  console.log("✅ Tokens transferred");
+  await airdropTransferTx.wait();
+  console.log("✅ Tokens transferred to airdrop contract");
+
+  // Lending pool gets 500k tokens
+  const lendingTransferTx = await demoToken.transfer(
+    lendingAddress,
+    ethers.parseEther("500000")
+  );
+  await lendingTransferTx.wait();
+  console.log("✅ Tokens transferred to lending contract");
+
+  // Fund the lending pool (optional - skip if it fails)
+  try {
+    console.log("🏦 Funding lending pool...");
+    const fundPoolTx = await lending.fundPool(ethers.parseEther("500000"));
+    await fundPoolTx.wait();
+    console.log("✅ Lending pool funded");
+  } catch (error) {
+    console.log("⚠️  Lending pool funding failed - continuing deployment...");
+    console.log("   Pool can be funded manually later");
+  }
 
   // Save deployment info
   const deploymentInfo = {
@@ -107,12 +153,19 @@ async function main() {
     contracts: {
       unbankedIdentity: unbankedIdentityAddress,
       communityAirdrop: airdropAddress,
+      governance: governanceAddress,
+      lending: lendingAddress,
       demoToken: demoTokenAddress,
       selfHub: hubAddress,
     },
     configuration: {
       scope: scope.toString(),
       configId: CONFIG_IDS.basic,
+    },
+    tokenDistribution: {
+      airdropPool: "100000",
+      lendingPool: "500000",
+      remaining: "400000",
     },
     deployer: deployer.address,
   };

@@ -44,9 +44,14 @@ export default function Home() {
   const [reputationScore, setReputationScore] = useState(0);
   const [userIdentifier, setUserIdentifier] = useState<string | null>(null);
   const [attestations, setAttestations] = useState<any[]>([]);
+  const [isProductionMode, setIsProductionMode] = useState(false);
 
-  // Particle effect on mount
+  // Check mode and setup effects on mount
   useEffect(() => {
+    // Check if we're in production mode
+    const mockMode = process.env.NEXT_PUBLIC_SELF_MOCK_MODE === "true";
+    setIsProductionMode(!mockMode);
+
     const handleMouseMove = (e: MouseEvent) => {
       const x = e.clientX / window.innerWidth;
       const y = e.clientY / window.innerHeight;
@@ -119,6 +124,30 @@ export default function Home() {
             </motion.div>
 
             <div className="flex items-center space-x-3 sm:space-x-6">
+              {/* Mode Indicator */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className={`flex items-center space-x-2 px-3 sm:px-4 py-2 rounded-full border ${
+                  isProductionMode
+                    ? "bg-blue-500/20 border-blue-500/50"
+                    : "bg-yellow-500/20 border-yellow-500/50"
+                }`}
+              >
+                <div
+                  className={`w-2 h-2 rounded-full ${
+                    isProductionMode ? "bg-blue-400" : "bg-yellow-400"
+                  }`}
+                />
+                <span
+                  className={`text-xs sm:text-sm font-medium ${
+                    isProductionMode ? "text-blue-400" : "text-yellow-400"
+                  }`}
+                >
+                  {isProductionMode ? "Production" : "Demo"}
+                </span>
+              </motion.div>
+
               {isIdentityVerified && (
                 <>
                   <motion.div

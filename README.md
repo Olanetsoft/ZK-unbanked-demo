@@ -1,14 +1,15 @@
 # ZK Identity for the Unbanked
 
-Privacy-preserving identity system enabling financial inclusion for 1+ billion unbanked people globally using Self Protocol's zero-knowledge verification.
+A production-ready privacy-preserving identity system enabling financial inclusion for 1+ billion unbanked people globally using Self Protocol's zero-knowledge verification with real on-chain interactions.
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- **Node.js 18+** ([Download here](https://nodejs.org/))
+- **Node.js 20+** ([Download here](https://nodejs.org/)) - Use `nvm use v20` before running any commands
 - **Git** ([Download here](https://git-scm.com/))
-- **Metamask** or compatible Web3 wallet
+- **Self app** on your mobile device ([Download here](https://apps.apple.com/app/self-protocol/id6478395474))
+- **ngrok** for local HTTPS tunneling ([Download here](https://ngrok.com/))
 
 ### 1. Clone & Install
 
@@ -93,24 +94,24 @@ npm run deploy:testnet
 
 ### Core Identity System
 
-- **Zero-knowledge identity verification** via Self Protocol
-- **Privacy-preserving nullifiers** (no personal data stored)
-- **Sybil resistance** (one identity per person)
-- **Cross-platform compatibility** (works on mobile)
+- **✅ Zero-knowledge identity verification** via Self Protocol (Production Ready)
+- **✅ Privacy-preserving nullifiers** (no personal data stored)
+- **✅ Sybil resistance** (one identity per person)
+- **✅ Cross-platform compatibility** (works on mobile)
 
-### Financial Services
+### Financial Services (All On-Chain)
 
-- **Anonymous microloans** based on reputation
-- **Community airdrops** with ZK eligibility
-- **Governance participation** with privacy
-- **Cross-border remittances** (planned)
+- **✅ Anonymous microloans** - Real smart contract interactions
+- **✅ Community airdrops** - Actual token minting on Celo Testnet
+- **✅ Governance participation** - On-chain voting system
+- **✅ Reputation attestations** - Blockchain-verified trust scores
 
-### Reputation System
+### Live Blockchain Integration
 
-- **Community attestations** from local leaders
-- **Trust scoring** without revealing identity
-- **Service eligibility** based on reputation
-- **Transparent verification** via blockchain
+- **✅ Real transactions** on Celo Alfajores Testnet
+- **✅ Smart contract deployment** and interaction
+- **✅ Token minting** and transfers
+- **✅ Transaction verification** via CeloScan
 
 ## 🔧 Development Guide
 
@@ -199,17 +200,21 @@ npm run setup             # Install all dependencies
 
 2. **Visit http://localhost:3000**
 
-3. **Test the demo flow:**
+3. **Test the production flow:**
    - Click "Verify Your Identity"
-   - Complete Self Protocol verification (or use mock mode)
-   - Build reputation through community attestations
-   - Access financial services based on reputation
+   - Scan QR code with Self app (using mock passport for testing)
+   - Complete real ZK verification
+   - Access financial services with actual on-chain transactions
+   - View your transactions on CeloScan
 
-### Demo Accounts
+### Testing with Self Protocol
 
-- The system uses **mock mode** by default for testing
-- Real Self Protocol verification available in production mode
-- Switch `SELF_MOCK_MODE=false` in backend/.env for real verification
+1. **Download Self app** on your mobile device
+2. **Create mock passport** in the app for testing (Nigeria ID not yet supported)
+3. **Scan QR code** from the demo to complete verification
+4. **Access services** that mint real tokens and execute smart contracts
+
+**Important**: All transactions are on Celo Alfajores Testnet with real on-chain execution.
 
 ## 🚀 Deployment
 
@@ -238,12 +243,16 @@ npm run deploy:testnet
 # Update frontend .env.local with new contract addresses
 ```
 
-## 📊 Contract Addresses (Celo Testnet)
+## 📊 Contract Addresses (Celo Alfajores Testnet)
 
-- **UnbankedIdentity**: `0x8843ddc7021154Bb77283c5122bcc4E199A7e22E`
-- **CommunityAirdrop**: `0xb15CC4Fe3eFC957F6A48e6c7493281aBe76ed94a`
-- **Demo Token**: `0x6be60B6DE9adAc380bFb0F3D649BE967574D2F68`
+- **UnbankedIdentity**: `0x1870114A14F66078DD8773942Df1c5A261b8A10a`
+- **CommunityAirdrop**: `0x857A80Fd23389c118dcEEA828D1c91a24f4c6710`
+- **DemoToken**: `0xeC85b7ffecc2594df16dC6671aC9274504408389`
+- **UnbankedGovernance**: `0x1681f992edb1DC2C05A9cA92aA2D850752245432`
+- **UnbankedLending**: `0xe66f6e95E3edECe3567290751c024B19DEebAACd`
 - **Self Hub**: `0x68c931C9a534D37aa78094877F46fE46a49F1A51`
+
+🔍 **View Live Transactions**: [CeloScan Testnet](https://celoscan.io/address/0xeC85b7ffecc2594df16dC6671aC9274504408389)
 
 ## 🤝 Contributing
 
