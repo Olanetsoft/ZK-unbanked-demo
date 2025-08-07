@@ -2,7 +2,7 @@
 
 A production-ready privacy-preserving identity system enabling financial inclusion for 1+ billion unbanked people globally using Self Protocol's zero-knowledge verification with real on-chain interactions.
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -252,7 +252,7 @@ npm run deploy:testnet
 - **UnbankedLending**: `0xe66f6e95E3edECe3567290751c024B19DEebAACd`
 - **Self Hub**: `0x68c931C9a534D37aa78094877F46fE46a49F1A51`
 
-🔍 **View Live Transactions**: [CeloScan Testnet](https://celoscan.io/address/0xeC85b7ffecc2594df16dC6671aC9274504408389)
+🔍 **View Live Transactions**: [Celo Alfajores Testnet](https://alfajores.celoscan.io/address/0xeC85b7ffecc2594df16dC6671aC9274504408389)
 
 ## 🤝 Contributing
 
@@ -299,7 +299,6 @@ npm run setup
 
 - **Issues**: Create an issue on GitHub
 - **Documentation**: Check [Self Protocol Docs](https://docs.self.xyz)
-- **Community**: Join our Discord/Telegram (links coming soon)
 
 ---
 
